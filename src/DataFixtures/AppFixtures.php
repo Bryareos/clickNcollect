@@ -29,6 +29,8 @@ class AppFixtures extends Fixture
         $bigMac->setPrice(4);
         $bigMac->setQuantity(10);
         $bigMac->setCategoryId($fastFood);
+
+        $manager->persist($bigMac);
         $manager->flush();
     }
 }
