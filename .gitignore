@@ -11,3 +11,7 @@
 /node_modules/
 .idea/misc.xml
 .idea/php.xml
+.idea/clickNcollect.iml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
