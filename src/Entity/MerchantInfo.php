@@ -9,7 +9,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *      normalizationContext={"groups"={"userInfo:read"}},
+ *      denormalizationContext={"groups"={"userInfo:write"}}
+ * )
  * @ORM\Entity(repositoryClass=MerchantInfoRepository::class)
  */
 class MerchantInfo
@@ -18,11 +21,15 @@ class MerchantInfo
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * 
+     * @Groups({"userInfo:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
+     * @Groups({"userInfo:read", "userInfo:write"})
      */
     private $name;
 
@@ -33,11 +40,15 @@ class MerchantInfo
 
     /**
      * @ORM\ManyToOne(targetEntity=Option::class, inversedBy="merchantInfos")
+     * 
+     * @Groups({"userInfo:read"})
      */
     private $option;
 
     /**
      * @ORM\OneToMany(targetEntity=Store::class, mappedBy="merchant_info_id")
+     * 
+     * @Groups({"userInfo:read"})
      */
     private $stores;
 

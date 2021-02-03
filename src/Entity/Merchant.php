@@ -11,7 +11,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ApiResource(
  *      normalizationContext={"groups"={"user:read"}},
- *      denormalizationContext={"groups"={"user:write"}}
+ *      denormalizationContext={"groups"={"user:write"}},
+ *      collectionOperations={"get"},
+ *      itemOperations={"get"}
  * )
  * @ORM\Entity(repositoryClass=MerchantRepository::class)
  */
@@ -28,6 +30,8 @@ class Merchant implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * 
+     * @Groups({"user:read", "user:write"})
      */
     private $email;
 

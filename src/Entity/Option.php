@@ -9,7 +9,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *      normalizationContext={"groups"={"option:read"}},
+ *      denormalizationContext={"groups"={"option:write"}}
+ * )
  * @ORM\Entity(repositoryClass=OptionRepository::class)
  */
 class Option
@@ -18,21 +21,29 @@ class Option
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * 
+     * @Groups({"option:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
+     * @Groups({"option:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
+     * @Groups({"option:read"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="float")
+     * 
+     * @Groups({"option:read"})
      */
     private $price;
 

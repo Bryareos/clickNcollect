@@ -6,10 +6,14 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"product:read"}},
+ *     denormalizationContext={"groups"={"product:write"}}
+ * )
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
 class Product
@@ -18,31 +22,43 @@ class Product
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * 
+     * @Groups({"product:read", "category:read", "store:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
+     * @Groups({"product:read", "product:write", "category:read", "store:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
+     * @Groups({"product:read", "product:write", "category:read", "store:read"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="float")
+     * 
+     * @Groups({"product:read", "product:write", "category:read", "store:read"})
      */
     private $price;
 
     /**
      * @ORM\Column(type="integer")
+     * 
+     * @Groups({"product:read", "product:write", "category:read", "store:read"})
      */
     private $quantity;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
+     * 
+     * @Groups("product:read")
      */
     private $category_id;
 

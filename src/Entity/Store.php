@@ -9,7 +9,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"store:read"}},
+ *     denormalizationContext={"groups"={"store:write"}}
+ * )
  * @ORM\Entity(repositoryClass=StoreRepository::class)
  */
 class Store
@@ -18,26 +21,36 @@ class Store
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * 
+     * @Groups({"store:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
+     * @Groups({"store:read", "store:write"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
+     * @Groups({"store:read", "store:write"})
      */
     private $adress;
 
     /**
      * @ORM\Column(type="boolean")
+     * 
+     * @Groups({"store:read", "store:write"})
      */
     private $isOpen;
 
     /**
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="store_id")
+     * 
+     * @Groups({"store:read"})
      */
     private $products;
 
