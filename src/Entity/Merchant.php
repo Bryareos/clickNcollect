@@ -2,20 +2,19 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\MerchantRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MerchantRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
- * @ApiResource(
- *      normalizationContext={"groups"={"user:read"}},
- *      denormalizationContext={"groups"={"user:write"}},
- *      collectionOperations={"get"},
- *      itemOperations={"get"}
- * )
  * @ORM\Entity(repositoryClass=MerchantRepository::class)
+ * @ApiResource(
+ *     normalizationContext={"groups"={"user:read"}},
+ *     denormalizationContext={"groups"={"user:write"}}  
+ * )
  */
 class Merchant implements UserInterface
 {
@@ -46,12 +45,20 @@ class Merchant implements UserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      * 
-     * @Groups("user:write")
      */
     private $password;
 
     /**
+     * @Groups({"user:write"})
+     * @SerializedName("password")
+     * 
+     */
+    private $plainPassword;
+
+    /**
      * @ORM\OneToOne(targetEntity=MerchantInfo::class, mappedBy="merchant", cascade={"persist", "remove"})
+     * 
+     * @Groups({"user:read", "user:write"})
      */
     private $merchantInfo;
 
@@ -130,7 +137,7 @@ class Merchant implements UserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     public function getMerchantInfo(): ?MerchantInfo
@@ -151,6 +158,26 @@ class Merchant implements UserInterface
         }
 
         $this->merchantInfo = $merchantInfo;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of plainPassword
+     */ 
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * Set the value of plainPassword
+     *
+     * @return  self
+     */ 
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }

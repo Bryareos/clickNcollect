@@ -30,7 +30,7 @@ class MerchantInfo
     /**
      * @ORM\Column(type="string", length=255)
      * 
-     * @Groups({"userInfo:read", "userInfo:write"})
+     * @Groups({"userInfo:read", "userInfo:write", "user:read", "user:write"})
      */
     private $name;
 
